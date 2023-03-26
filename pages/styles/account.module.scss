@@ -1,0 +1,53 @@
+@import "../styles/mixins";
+
+.auth_profile_main{
+    width: 100%;
+    height: 100vh;
+    @include flexBox();
+}
+.auth_profile_card{
+    border-radius: 0.5rem;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.6);
+    margin: 2rem  0rem;
+    width: min(30rem , 90%);
+    height: min(21rem , 95%);
+    overflow-y: auto;
+    @include scrollbar();
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    // background-color: var(--theme-card);
+    background-color: #303845;
+}
+.backbtn{
+    @include flexBox();
+    width: 2rem;
+    aspect-ratio: 1/1;
+    top: 0.5rem;
+    right: 0.5rem;
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(var(--primary-color-rgb) , 0.9);
+    backdrop-filter: blur(20px);
+    cursor: pointer;
+}
+.logo{
+    margin: 0.5rem;
+    text-align: center;
+    text-transform: capitalize;
+    h1{
+        @include textgrad();
+        letter-spacing: 2px;
+    }
+    p{
+        opacity: 0.7;
+    }
+}
+.link_tag{
+    margin:auto 0rem 0.6rem;
+    @include flexBox();
+    cursor: pointer;
+    b{
+        color: rgb(80, 130, 239);
+    }
+}
