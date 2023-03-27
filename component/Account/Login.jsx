@@ -8,7 +8,7 @@ import axios from "axios"
 
 const Login = () => {
   let router = useRouter()
-  
+  let api = process.env.NEXT_PUBLIC_API_URL
     const [passtype, setpasstype] = useState("password")
     let nameRef = useRef()
     let passwordref = useRef()
@@ -22,7 +22,7 @@ const Login = () => {
         //validaion function 
           if (password.length !== "" && name !== "") {
             // console.log(data)
-            axios.get(`http://localhost:8080/api/login?name=${name}&pass=${password}`).then((e)=>{
+            axios.get(`${api}api/login?name=${name}&pass=${password}`).then((e)=>{
               console.log(e.data.user)
               localStorage.setItem("id",e.data.user.name)
               if(e.data.verified === true){
