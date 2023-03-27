@@ -2,7 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import style from "./styles/chatside.module.scss";
 import {useRouter} from "next/router"
-const socket = io(process.env.NEXT_PUBLIC_SOCKET);
+const socket = io(process.env.NEXT_PUBLIC_SOCKET,{
+  rejectUnauthorized: false
+}
+  );
 import axios from "axios"
 export default function ChatSide() {
   const [messages, setMessages] = useState([]);
