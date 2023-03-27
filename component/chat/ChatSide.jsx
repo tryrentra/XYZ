@@ -17,7 +17,7 @@ export default function ChatSide() {
     // alert("hi")
     axios.get(`${api}api/chats`).then((e)=>{
       setMessages([...messages, e.data.chats.flat(Infinity)].flat(Infinity));
-      console.log(e.data.chats)
+//       console.log(e.data.chats)
     })
   }, []);
   console.log(messages)
@@ -76,6 +76,7 @@ export default function ChatSide() {
 
 const Chat = ({ message }) => {
   const { name, text,timestamp } = message;
+  console.log(timestamp)
   return (
     <div className={style.chatBox}>
       <img src="favicon.ico" alt="" />
