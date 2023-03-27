@@ -1,32 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import style from "./styles/chatside.module.scss";
-import {useRouter} from "next/router"
-const socket = io(process.env.NEXT_PUBLIC_SOCKET,{
+import { useRouter } from "next/router"
+const socket = io(process.env.NEXT_PUBLIC_SOCKET, {
   rejectUnauthorized: false
 }
-  );
+);
 import axios from "axios"
 export default function ChatSide() {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [id, setID] = useState("");
   let api = process.env.NEXT_PUBLIC_API_URL
+  const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
   const router = useRouter()
   useEffect(() => {
-    // alert("hi")
-    axios.get(`${api}api/chats`).then((e)=>{
+    axios.get(`${api}api/chats`).then((e) => {
       setMessages([...messages, e.data.chats.flat(Infinity)].flat(Infinity));
-//       console.log(e.data.chats)
     })
   }, []);
   console.log(messages)
-  useEffect(()=>{
+  useEffect(() => {
     const id = localStorage.getItem("id")
     !id && router.push("/")
-    // alert(id)
     setID(id)
-  },[])
+  }, [])
   useEffect(() => {
     socket.on("message", (message) => {
       setMessages([...messages, message]);
@@ -34,8 +32,8 @@ export default function ChatSide() {
   }, [messages]);
 
   function handleKeyPress(event) {
-    if (event.key === "Enter"&& text !=="") {
-      socket.emit("message", {text,id});
+    if (event.key === "Enter" && text !== "") {
+      socket.emit("message", { text, id, timestamp });
       setText("");
     }
   }
@@ -67,7 +65,10 @@ export default function ChatSide() {
             onChange={(e) => setText(e.target.value)}
             onKeyPress={handleKeyPress}
           />
-          <button className="input-box__button">Send</button>
+          <button onClick={() => {
+            socket.emit("message", { text, id,timestamp });
+            setText("");
+          }} className="input-box__button">Send</button>
         </div>
       </div>
     </div>
@@ -75,7 +76,7 @@ export default function ChatSide() {
 }
 
 const Chat = ({ message }) => {
-  const { name, text,timestamp } = message;
+  const { name, text, timestamp } = message;
   console.log(timestamp)
   return (
     <div className={style.chatBox}>
@@ -83,7 +84,7 @@ const Chat = ({ message }) => {
       <div>
         <h1>{name}</h1>
         <p>{text}</p>
-         <span>{timestamp}</span> 
+        <span>{timestamp}</span>
       </div>
     </div>
   );
