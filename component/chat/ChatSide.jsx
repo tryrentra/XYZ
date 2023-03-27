@@ -2,16 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import style from "./styles/chatside.module.scss";
 import {useRouter} from "next/router"
-const socket = io("http://localhost:4000");
+const socket = io(process.env.NEXT_PUBLIC_SOCKET);
 import axios from "axios"
 export default function ChatSide() {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [id, setID] = useState("");
+  let api = process.env.NEXT_PUBLIC_API_URL
   const router = useRouter()
   useEffect(() => {
     // alert("hi")
-    axios.get("http://localhost:8080/api/chats").then((e)=>{
+    axios.get(`${api}api/chats`).then((e)=>{
       setMessages([...messages, e.data.chats.flat(Infinity)].flat(Infinity));
       console.log(e.data.chats)
     })
