@@ -75,14 +75,14 @@ export default function ChatSide() {
 }
 
 const Chat = ({ message }) => {
-  const { name, text } = message;
+  const { name, text,timestamp } = message;
   return (
     <div className={style.chatBox}>
       <img src="favicon.ico" alt="" />
       <div>
         <h1>{name}</h1>
         <p>{text}</p>
-        {/* <span>{timestamp}</span> */}
+         <span>{timestamp}</span> 
       </div>
     </div>
   );
