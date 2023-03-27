@@ -1,8 +1,7 @@
 import ChatSide from '@/component/chat/ChatSide'
 import MemberSide from '@/component/chat/MemberSide'
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import style from "./styles/chat.module.scss"
-
 const chat = () => {
   return (
     <div className={style.chatContainer}>

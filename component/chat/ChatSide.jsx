@@ -1,63 +1,85 @@
-import { useEffect, useRef, useState } from 'react'
-import style from "./styles/chatside.module.scss"
-import SendIcon from '@mui/icons-material/Send';
-import FolderIcon from '@mui/icons-material/Folder';
-
+import React, { useEffect, useRef, useState } from "react";
+import io from "socket.io-client";
+import style from "./styles/chatside.module.scss";
+import {useRouter} from "next/router"
+const socket = io("http://localhost:4000");
+import axios from "axios"
 export default function ChatSide() {
-  const [messages, setMessages] = useState([])
-  function handleSubmit(event) {
-    event.preventDefault()
-    const message = event.target.elements.message.value
-    setMessages([...messages, { text: message }])
-    event.target.reset()
-  }
-  const messagesEndRef = useRef(null)
+  const [messages, setMessages] = useState([]);
+  const [text, setText] = useState("");
+  const [id, setID] = useState("");
+  const router = useRouter()
   useEffect(() => {
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
-  }, [])
+    // alert("hi")
+    axios.get("http://localhost:8080/api/chats").then((e)=>{
+      setMessages([...messages, e.data.chats.flat(Infinity)].flat(Infinity));
+      console.log(e.data.chats)
+    })
+  }, []);
+  console.log(messages)
+  useEffect(()=>{
+    const id = localStorage.getItem("id")
+    !id && router.push("/")
+    // alert(id)
+    setID(id)
+  },[])
+  useEffect(() => {
+    socket.on("message", (message) => {
+      setMessages([...messages, message]);
+    });
+  }, [messages]);
+
+  function handleKeyPress(event) {
+    if (event.key === "Enter"&& text !=="") {
+      socket.emit("message", {text,id});
+      setText("");
+    }
+  }
+
+  const messagesEndRef = useRef(null);
+  useEffect(() => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <div className={style.chatSideMain}>
-<div className={style.messageContainer}>
-  <div className={style.chatList}>
-<Chat/>
-<Chat/>
-<Chat/>
-  </div>
-  
-  <div ref={messagesEndRef} />
-</div>
+      <div className={style.messageContainer}>
+        <div className={style.chatList}>
+          {messages.map((message) => (
+            <Chat key={message.id} message={message} />
+          ))}
+        </div>
+
+        <div ref={messagesEndRef} />
+      </div>
 
       <div className={style.inputDiv}>
-      {/* <form onSubmit={handleSubmit} >
-        <textarea
-          type="text"
-          name="message"
-          autoComplete='off'
-          placeholder="Type your message here..."
-          rows={1}
-          column={1}
+        <div className="input-box">
+          <input
+            type="text"
+            className="input-box__input"
+            placeholder="Type your message..."
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyPress={handleKeyPress}
           />
-        <FolderIcon/>
-        <SendIcon/>
-      </form> */}
-     <div className="input-box">
-      <input type="text" className="input-box__input" placeholder="Type your message..." />
-      <button className="input-box__button" >Send</button>
-    </div>
+          <button className="input-box__button">Send</button>
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
-const Chat = ()=>{
-  return(
+const Chat = ({ message }) => {
+  const { name, text } = message;
+  return (
     <div className={style.chatBox}>
-          <img src="favicon.ico" alt="" />
+      <img src="favicon.ico" alt="" />
       <div>
-           <h1>faltu</h1>
-           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto eligendi est labore error eum, inventore optio odio voluptatibus vero commodi, assumenda nisi, ipsa molestias quisquam nihil dolores dolore? Nulla, exercitationem.</p>
-           <span>23:24</span>
-          </div>
+        <h1>{name}</h1>
+        <p>{text}</p>
+        {/* <span>{timestamp}</span> */}
+      </div>
     </div>
-  )
-}
+  );
+};
