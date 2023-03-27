@@ -33,7 +33,7 @@ export default function ChatSide() {
 
   function handleKeyPress(event) {
     if (event.key === "Enter" && text !== "") {
-      socket.emit("message", { text, id, timestamp });
+      socket.emit("message", { text, id });
       setText("");
     }
   }
@@ -66,7 +66,7 @@ export default function ChatSide() {
             onKeyPress={handleKeyPress}
           />
           <button onClick={() => {
-            socket.emit("message", { text, id,timestamp });
+            socket.emit("message", { text, id,timestamp={new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} });
             setText("");
           }} className="input-box__button">Send</button>
         </div>
@@ -77,10 +77,10 @@ export default function ChatSide() {
 
 const Chat = ({ message }) => {
   const { name, text, timestamp } = message;
-  console.log(timestamp)
+//   console.log(timestamp)
   return (
     <div className={style.chatBox}>
-      <img src="favicon.ico" alt="" />
+//       <img src="favicon.ico" alt="" />
       <div>
         <h1>{name}</h1>
         <p>{text}</p>
