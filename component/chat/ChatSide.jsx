@@ -12,7 +12,7 @@ export default function ChatSide() {
   const [text, setText] = useState("");
   const [id, setID] = useState("");
   let api = process.env.NEXT_PUBLIC_API_URL
-  const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+  const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
   const router = useRouter()
   useEffect(() => {
     axios.get(`${api}api/chats`).then((e) => {
