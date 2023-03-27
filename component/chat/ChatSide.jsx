@@ -82,7 +82,6 @@ const Chat = ({ message }) => {
   console.log(timestamp)
   return (
     <div className={style.chatBox}>
-//       <img src="favicon.ico" alt="" />
       <div>
         <h1>{name}</h1>
         <p>{text}</p>
