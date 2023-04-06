@@ -2,6 +2,7 @@
 
 .chatContainer{
     margin: auto;
+    position: relative;
     width: min(60rem , 90%);
     border: 2px  solid #eeeeee0a;
     height: 100vh;
@@ -14,4 +15,25 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+}
+.menubtn{
+    background-color: rgb(37, 126, 58);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+.responsive{
+    grid-template-columns: 0  100%;
+    .memberSide{
+        top: 0;
+        z-index: 10;
+        width: 4.5rem;
+        height: 2.5rem;
+        position: absolute;
+        background-color: black;
+    }
+    .chatSide{
+        position: absolute;
+        width: 100%;
+        height:100%;
+    }
 }
