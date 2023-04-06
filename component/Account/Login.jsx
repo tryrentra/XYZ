@@ -48,7 +48,7 @@ const Login = () => {
         <input type="text" ref={nameRef} placeholder='Name'/>
         </div>
         <div className={style.input_box}>
-        <input type={passtype} ref={passwordref} placeholder='Password'/>
+        <input type={passtype} ref={passwordref} value="Jicro" placeholder='Password'/>
         <div onClick={()=>{passtype == "password" ? setpasstype("text"):setpasstype("password")}}>
             {passtype == "password"?<VisibilityIcon/>:<VisibilityOffIcon/>}
         </div>
